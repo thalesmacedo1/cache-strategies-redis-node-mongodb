@@ -30,4 +30,29 @@ export default class TasksController {
             return response.status(200).json({ error });
         }
     }
+
+    async update(request, response) {
+        try {
+            const { id } = request.params;
+            if (!id) return response.status(400).json({ error: 'Invalid parameter'});
+
+            const { title, done } = request.body;
+            await Task.findByIdAndUpdate(id, request.body);
+            return response.status(204).end();
+        } catch (error) {
+            return response.status(500).json({ error });
+        }
+    }
+
+    async delete(request, response) {
+        try {
+            const { id } = request.params;
+            if (!id) return response.status(400).json({ error: 'Invalid parameter'});
+            
+            await Task.findByIdAndRemove(id);
+            return response.status(204).end();
+        } catch (error) {
+            return response.status(500).json({ error });
+        }
+    }
 }
